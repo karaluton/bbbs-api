@@ -21,6 +21,9 @@ class UserController {
   }
 
   * index(request, response) {
+    if (request.input('current')) {
+      return response.jsonApi('User', request.authUser);
+    }
     const users = yield User.with().fetch();
 
     response.jsonApi('User', users);
