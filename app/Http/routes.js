@@ -23,7 +23,7 @@ Route.resource('/api/users', 'UserController')
   .only(['index', 'show', 'update', 'destroy'])
   .middleware('auth');
 
-Route.resource('/events', 'EventController')
+Route.resource('/api/events', 'EventController')
   .except(['create', 'edit']);
 
 Route.post('/api/token-auth', 'SessionController.store');
