@@ -10,9 +10,10 @@ class EventSchema extends Schema {
       table.string('name');
       table.date('date');
       table.string('location');
-      table.integer('startTime');
-      table.integer('endTime');
+      table.timestamp('start_time');
+      table.timestamp('end_time');
       table.integer('tickets');
+      table.text('message');
 
       table.timestamps();
     });

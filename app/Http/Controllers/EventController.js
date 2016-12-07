@@ -1,7 +1,16 @@
 'use strict';
 
 const Event = use('App/Model/Event');
-const attributes = ['name', 'date', 'location', 'startTime', 'endTime', 'tickets', 'users'];
+const attributes = [
+  'name',
+  'date',
+  'location',
+  'start-time',
+  'end-time',
+  'tickets',
+  'users',
+  'message',
+];
 
 class EventController {
 
