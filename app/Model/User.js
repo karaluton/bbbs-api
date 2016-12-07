@@ -17,6 +17,11 @@ class User extends Lucid {
     return [
       'email',
       'password',
+      'employer',
+      'phone',
+      'first_name',
+      'last_name',
+      'little',
     ];
   }
 

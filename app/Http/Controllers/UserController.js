@@ -1,16 +1,25 @@
+
 'use strict';
 
 const User = use('App/Model/User');
 
 const Hash = use('Hash');
-const attributes = ['email', 'password', 'password-confirmation'];
+const attributes = [
+  'email',
+  'password',
+  'employer',
+  'phone',
+  'first-name',
+  'last-name',
+  'little',
+];
 
 class UserController {
 
   get createRules() {
     return {
       email: 'required|email|unique:users',
-      password: 'required|confirmed',
+      password: 'required',
     };
   }
 
