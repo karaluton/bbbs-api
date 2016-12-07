@@ -2,7 +2,14 @@ const JsonApiView = require('adonis-jsonapi/src/JsonApiView');
 
 class User extends JsonApiView {
   get attributes() {
-    return ['email', 'password'];
+    return [
+      'email',
+      'employer',
+      'phone',
+      'first_name',
+      'last_name',
+      'little',
+    ];
   }
 
 }
