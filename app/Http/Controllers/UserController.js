@@ -4,6 +4,7 @@
 const User = use('App/Model/User');
 const snakeCaseKeys = require('snakecase-keys');
 const Hash = use('Hash');
+const File = use('File');
 const attributes = [
   'email',
   'password',
@@ -39,8 +40,6 @@ class UserController {
   }
 
   * store(request, response) {
-    const input = request.jsonApi.getAttributesSnakeCase(attributes);
-
     const profilePic = request.file('uploadFile', {
       maxSize: '10mb',
       allowedExtensions: ['jpg', 'png', 'jpeg'],
@@ -65,6 +64,7 @@ class UserController {
       return response.jsonApi('User', user);
     }
 
+    const input = request.jsonApi.getAttributesSnakeCase(attributes);
     yield request.jsonApi.assertValid(input, this.createRules, this.createMessages);
 
     input.password = yield Hash.make(input.password);
