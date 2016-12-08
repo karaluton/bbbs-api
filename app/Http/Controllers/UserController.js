@@ -66,6 +66,10 @@ class UserController {
     const foreignKeys = {
     };
 
+    if (!input.password) {
+      delete input.password;
+    }
+
     const user = yield User.with().where({ id }).firstOrFail();
     user.fill(Object.assign({}, input, foreignKeys));
     yield user.save();
