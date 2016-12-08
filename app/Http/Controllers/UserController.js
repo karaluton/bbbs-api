@@ -2,7 +2,7 @@
 'use strict';
 
 const User = use('App/Model/User');
-
+const snakeCaseKeys = require('snakecase-keys');
 const Hash = use('Hash');
 const attributes = [
   'email',
@@ -40,6 +40,30 @@ class UserController {
 
   * store(request, response) {
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
+
+    const profilePic = request.file('uploadFile', {
+      maxSize: '10mb',
+      allowedExtensions: ['jpg', 'png', 'jpeg'],
+    });
+
+    if (profilePic && profilePic.exists()) {
+      const attrs = snakeCaseKeys(request.all());
+
+      yield File.upload(profilePic.clientName(), profilePic);
+
+      attrs.password = yield Hash.make(attrs.password);
+      const foreignKeys = {
+      };
+      const user = yield User.create(Object.assign({}, attrs, foreignKeys));
+
+      attrs.profile_pic_url = profilePic.clientName();
+      attrs.profile_pic_extension = profilePic.extension();
+
+      user.fill(attrs);
+      yield user.save();
+
+      return response.jsonApi('User', user);
+    }
 
     yield request.jsonApi.assertValid(input, this.createRules, this.createMessages);
 
@@ -87,7 +111,6 @@ class UserController {
     const foreignKeys = {
     };
 
-    const user = yield User.with().where({ id }).firstOrFail();
     user.fill(Object.assign({}, input, foreignKeys));
     yield user.save();
 
