@@ -59,7 +59,28 @@ class UserController {
   }
 
   * update(request, response) {
+    const profilePic = request.file('uploadFile', {
+      maxSize: '10mb',
+      allowedExtensions: ['jpg', 'png', 'jpeg'],
+    });
+
     const id = request.param('id');
+    const user = yield User.with().where({ id }).firstOrFail();
+
+    if (profilePic && profilePic.exists()) {
+      const attrs = snakeCaseKeys(request.all());
+
+      yield File.upload(profilePic.clientName(), profilePic);
+
+      attrs.profile_pic_url = profilePic.clientName();
+      attrs.profile_pic_extension = profilePic.extension();
+
+      user.fill(attrs);
+      yield user.save();
+
+      return response.jsonApi('User', user);
+    }
+
     request.jsonApi.assertId(id);
 
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
