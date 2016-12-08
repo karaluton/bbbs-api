@@ -32,6 +32,7 @@ const providers = [
   'adonis-jsonapi/providers/JsonApiProvider',
 
   'adonis-validation-provider/providers/ValidatorProvider',
+  'adonis-filesystem/providers/FilesystemProvider',
 ];
 
 /*
@@ -81,6 +82,7 @@ const aliases = {
   View: 'Adonis/Src/View',
 
   Validator: 'Adonis/Addons/Validator',
+  File: 'AdonisFilesystem/Filesystem',
 };
 
 /*
