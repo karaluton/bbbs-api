@@ -5,8 +5,20 @@ const attributes = ['quantity'];
 
 class TicketController {
 
+  convertEvent(event) {
+    let ticketClaimedSum = 0;
+
+    if (event.claimedTickets) {
+      ticketClaimedSum = event.claimedTickets.reduce((sum, val) => sum + val.quantity, 0);
+    }
+
+    return Object.assign({
+      remaining_tickets: event.tickets - ticketClaimedSum,
+    }, event);
+  }
+
   * index(request, response) {
-    const tickets = yield Ticket.with('user', 'event').fetch();
+    const tickets = yield Ticket.with('user', 'event.claimedTickets').fetch();
 
     response.jsonApi('Ticket', tickets);
   }
@@ -14,19 +26,29 @@ class TicketController {
   * store(request, response) {
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
     const foreignKeys = {
-      user_id: this.currentUser.id,
+      user_id: request.currentUser.id,
       event_id: request.jsonApi.getRelationId('event'),
     };
     const ticket = yield Ticket.create(Object.assign({}, input, foreignKeys));
 
-    response.jsonApi('Ticket', ticket);
+    yield ticket.related('event.claimedTickets', 'user').load();
+
+    const ticketComputed = ticket.toJSON();
+
+    ticketComputed.event = this.convertEvent(ticketComputed.event);
+
+    response.jsonApi('Ticket', ticketComputed);
   }
 
   * show(request, response) {
     const id = request.param('id');
-    const ticket = yield Ticket.with('user', 'event').where({ id }).firstOrFail();
+    const ticket = yield Ticket.with('user', 'event.claimedTickets').where({ id }).firstOrFail();
 
-    response.jsonApi('Ticket', ticket);
+    const ticketComputed = ticket.toJSON();
+
+    ticketComputed.event = this.convertEvent(ticketComputed.event);
+
+    response.jsonApi('Ticket', ticketComputed);
   }
 
   * update(request, response) {
@@ -38,11 +60,15 @@ class TicketController {
       event_id: request.jsonApi.getRelationId('event'),
     };
 
-    const ticket = yield Ticket.with('user', 'event').where({ id }).firstOrFail();
+    const ticket = yield Ticket.with('user', 'event.claimedTickets').where({ id }).firstOrFail();
     ticket.fill(Object.assign({}, input, foreignKeys));
     yield ticket.save();
 
-    response.jsonApi('Ticket', ticket);
+    const ticketComputed = ticket.toJSON();
+
+    ticketComputed.event = this.convertEvent(ticketComputed.event);
+
+    response.jsonApi('Ticket', ticketComputed);
   }
 
   * destroy(request, response) {
