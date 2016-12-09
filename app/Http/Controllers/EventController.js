@@ -14,10 +14,23 @@ const attributes = [
 
 class EventController {
 
-  * index(request, response) {
-    const events = yield Event.with().fetch();
+  convertEvent(event) {
+    let ticketClaimedSum = 0;
 
-    response.jsonApi('Event', events);
+    if (event.claimedTickets) {
+      ticketClaimedSum = event.claimedTickets.reduce((sum, val) => sum + val.quantity, 0);
+    }
+
+    return Object.assign({
+      remaining_tickets: event.tickets - ticketClaimedSum,
+    }, event);
+  }
+
+  * index(request, response) {
+    const events = yield Event.with('claimedTickets').fetch();
+    const showEvents = events.toJSON().map(this.convertEvent);
+
+    response.jsonApi('Event', showEvents);
   }
 
   * store(request, response) {
@@ -26,14 +39,14 @@ class EventController {
     };
     const event = yield Event.create(Object.assign({}, input, foreignKeys));
 
-    response.jsonApi('Event', event);
+    response.jsonApi('Event', this.convertEvent(event.toJSON()));
   }
 
   * show(request, response) {
     const id = request.param('id');
     const event = yield Event.with().where({ id }).firstOrFail();
 
-    response.jsonApi('Event', event);
+    response.jsonApi('Event', this.convertEvent(event.toJSON()));
   }
 
   * update(request, response) {
@@ -48,7 +61,7 @@ class EventController {
     event.fill(Object.assign({}, input, foreignKeys));
     yield event.save();
 
-    response.jsonApi('Event', event);
+    response.jsonApi('Event', this.convertEvent(event.toJSON()));
   }
 
   * destroy(request, response) {

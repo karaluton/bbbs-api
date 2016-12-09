@@ -11,9 +11,9 @@ class Event extends JsonApiView {
       'tickets',
       'users',
       'message',
+      'remaining_tickets',
     ];
   }
-
 }
 
 module.exports = Event;
