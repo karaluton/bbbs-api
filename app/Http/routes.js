@@ -26,4 +26,6 @@ Route.resource('/api/users', 'UserController')
 Route.resource('/api/events', 'EventController')
   .except(['create', 'edit']);
 
+Route.resource('/api/announcements', 'AnnouncementController').except(['create', 'edit']);
+
 Route.post('/api/token-auth', 'SessionController.store');
