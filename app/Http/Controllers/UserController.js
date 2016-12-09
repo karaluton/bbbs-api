@@ -13,6 +13,8 @@ const attributes = [
   'first-name',
   'last-name',
   'little',
+  'is-admin',
+  'is-approved',
 ];
 
 class UserController {

@@ -24,6 +24,8 @@ class User extends Lucid {
       'little',
       'little',
 
+      'is_admin',
+      'is_approved',
       'profile_pic_url',
       'profile_pic_extension',
     ];

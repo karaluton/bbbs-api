@@ -8,6 +8,8 @@ class User extends JsonApiView {
       'phone',
       'first_name',
       'last_name',
+      'is_admin',
+      'is_approved',
       'little',
     ];
   }
