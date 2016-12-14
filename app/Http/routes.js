@@ -29,4 +29,6 @@ Route.resource('/api/events', 'EventController')
 Route.resource('/api/announcements', 'AnnouncementController').except(['create', 'edit']);
 Route.resource('/api/tickets', 'TicketController').except(['create', 'edit']);
 
+Route.resource('/api/messages', 'MessageController').except(['create', 'edit']);
+
 Route.post('/api/token-auth', 'SessionController.store');
