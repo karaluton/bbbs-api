@@ -6,6 +6,11 @@ const attributes = ['subject', 'message'];
 class AnnouncementController {
 
   * index(request, response) {
+    if (request.input('latest')) {
+      const announcement = yield Announcement.with('user').orderBy('created_at', 'desc').first();
+
+      return response.jsonApi('Announcement', announcement);
+    }
     const announcements = yield Announcement.with('user').fetch();
 
     response.jsonApi('Announcement', announcements);
