@@ -15,6 +15,13 @@ class User extends JsonApiView {
     ];
   }
 
+  tickets() {
+    return this.hasMany('App/Http/JsonApiViews/Ticket', {
+      included: true,
+      excludeRelation: 'user',
+    });
+  }
+
 }
 
 module.exports = User;

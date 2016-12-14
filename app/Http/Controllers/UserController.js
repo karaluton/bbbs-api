@@ -34,7 +34,11 @@ class UserController {
 
   * index(request, response) {
     if (request.input('current')) {
-      return response.jsonApi('User', request.authUser);
+      const user = request.authUser;
+
+      yield user.related('tickets.event').load();
+
+      return response.jsonApi('User', user);
     }
     const users = yield User.with().fetch();
 
