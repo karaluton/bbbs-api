@@ -11,6 +11,7 @@ class User extends JsonApiView {
       'is_admin',
       'is_approved',
       'little',
+      'profile_pic_url',
     ];
   }
 
