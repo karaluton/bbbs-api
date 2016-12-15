@@ -15,8 +15,8 @@ const attributes = [
 
 function setTimestamps(inputs) {
   return Object.assign({}, inputs, {
-    start_time: moment(`${input.date} ${input.start_time}`),
-    end_time: moment(`${input.date} ${input.end_time}`),
+    start_time: moment(`${inputs.date} ${inputs.start_time}`),
+    end_time: moment(`${inputs.date} ${inputs.end_time}`),
   });
 }
 
