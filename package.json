@@ -20,7 +20,7 @@
   "dependencies": {
     "adonis-ace": "^3.0.4",
     "adonis-auth": "^1.0.4",
-    "adonis-commands": "^2.1.2",
+    "adonis-commands": "rtablada/adonis-commands#feature/key-echo",
     "adonis-filesystem": "^0.3.0",
     "adonis-fold": "^3.0.3",
     "adonis-framework": "^3.0.5",

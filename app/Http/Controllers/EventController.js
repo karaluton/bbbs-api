@@ -1,6 +1,7 @@
 'use strict';
 
 const Event = use('App/Model/Event');
+const moment = require('moment');
 const attributes = [
   'name',
   'date',
@@ -11,6 +12,13 @@ const attributes = [
   'users',
   'message',
 ];
+
+function setTimestamps(inputs) {
+  return Object.assign({}, inputs, {
+    start_time: moment(`${input.date} ${input.start_time}`),
+    end_time: moment(`${input.date} ${input.end_time}`),
+  });
+}
 
 class EventController {
 
@@ -37,7 +45,10 @@ class EventController {
     const input = request.jsonApi.getAttributesSnakeCase(attributes);
     const foreignKeys = {
     };
-    const event = yield Event.create(Object.assign({}, input, foreignKeys));
+
+    const attrs = setTimestamps(input);
+
+    const event = yield Event.create(Object.assign({}, attrs, foreignKeys));
 
     response.jsonApi('Event', this.convertEvent(event.toJSON()));
   }
@@ -57,8 +68,10 @@ class EventController {
     const foreignKeys = {
     };
 
+    const attrs = setTimestamps(input);
+
     const event = yield Event.with().where({ id }).firstOrFail();
-    event.fill(Object.assign({}, input, foreignKeys));
+    event.fill(Object.assign({}, attrs, foreignKeys));
     yield event.save();
 
     response.jsonApi('Event', this.convertEvent(event.toJSON()));
