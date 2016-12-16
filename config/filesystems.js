@@ -5,7 +5,7 @@ const Helpers = use('Helpers');
 
 module.exports = {
 
-  default: Env.get('FILE_DRIVER', 'protected'),
+  default: Env.get('FILE_DRIVER', 'local'),
 
   public: {
     driver: 'local',
