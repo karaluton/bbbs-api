@@ -5,7 +5,7 @@ const Helpers = use('Helpers');
 
 module.exports = {
 
-  default: 'public',
+  default: Env.get('FILE_DRIVER', 'protected'),
 
   public: {
     driver: 'local',
@@ -20,6 +20,17 @@ module.exports = {
     root: Helpers.storagePath('app'),
     options: {
       encoding: 'utf8',
+    },
+  },
+
+  s3: {
+    driver: 'pkgcloud',
+    container: Env.get('S3_BUCKET'),
+    options: {
+      provider: 'amazon',
+      keyId: Env.get('S3_KEY'), // access key id
+      key: Env.get('S3_SECRET'), // secret key
+      region: Env.get('S3_REGION'), // region
     },
   },
 
