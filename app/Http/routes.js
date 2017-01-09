@@ -32,3 +32,11 @@ Route.resource('/api/tickets', 'TicketController').except(['create', 'edit']);
 Route.resource('/api/messages', 'MessageController').except(['create', 'edit']);
 
 Route.post('/api/token-auth', 'SessionController.store');
+
+const File = use('File');
+
+Route.get('/uploads/~/*', function* (request, response) {
+  const stream = File.getStream(request.param(0));
+
+  stream.pipe(response.response);
+});
