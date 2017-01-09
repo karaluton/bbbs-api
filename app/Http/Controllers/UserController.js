@@ -5,7 +5,7 @@ const User = use('App/Model/User');
 const snakeCaseKeys = require('snakecase-keys');
 const Hash = use('Hash');
 const File = use('File');
-const Mail = use('Mail');
+// const Mail = use('Mail');
 const attributes = [
   'email',
   'password',
@@ -79,11 +79,11 @@ class UserController {
     };
     const user = yield User.create(Object.assign({}, input, foreignKeys));
 
-    yield Mail.send('emails.welcome', user, (message) => {
-      message.to(user.email, user.first_name);
-      message.from('awesome@adonisjs.com');
-      message.subject('Welcome to the Kitten\'s World');
-    });
+    // yield Mail.send('emails.welcome', user, (message) => {
+    //   message.to(user.email, user.first_name);
+    //   message.from('awesome@adonisjs.com');
+    //   message.subject('Welcome to the Kitten\'s World');
+    // });
 
     response.jsonApi('User', user);
   }
