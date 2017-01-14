@@ -32,3 +32,18 @@ Route.resource('/api/tickets', 'TicketController').except(['create', 'edit']);
 Route.resource('/api/messages', 'MessageController').except(['create', 'edit']);
 
 Route.post('/api/token-auth', 'SessionController.store');
+
+const File = use('File');
+const Env = use('Env');
+
+Route.get('/uploads/*', function* (request, response) {
+  const type = Env.get('FILE_DRIVER');
+
+  if (type === 's3') {
+    return response.redirect(`https://s3.amazonaws.com/${Env.get('S3_BUCKET')}/${request.param(0)}`);
+  }
+
+  const stream = File.getStream(request.param(0));
+
+  stream.pipe(response.response);
+});

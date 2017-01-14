@@ -33,7 +33,7 @@ const providers = [
 
   'adonis-validation-provider/providers/ValidatorProvider',
   'adonis-filesystem/providers/FilesystemProvider',
-  'adonis-mail-provider/providers/MailProvider',
+  // 'adonis-mail-provider/providers/MailProvider',
 ];
 
 /*
@@ -84,7 +84,7 @@ const aliases = {
 
   Validator: 'Adonis/Addons/Validator',
   File: 'AdonisFilesystem/Filesystem',
-  Mail: 'Adonis/Addons/Mail',
+  // Mail: 'Adonis/Addons/Mail',
 };
 
 /*
